@@ -11,7 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\InfiniteAxisUtilitySystem\InfiniteAxisUtilitySystem.csproj" />
+    <ProjectReference Include="..\InfiniteAxisUtilitySystem.Persistence\InfiniteAxisUtilitySystem.Persistence.csproj" />
   </ItemGroup>
 
 </Project>

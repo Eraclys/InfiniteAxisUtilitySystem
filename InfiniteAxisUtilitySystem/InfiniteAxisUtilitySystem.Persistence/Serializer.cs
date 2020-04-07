@@ -12,14 +12,14 @@ namespace InfiniteAxisUtilitySystem.Persistence
             TypeNameAssemblyFormatHandling = TypeNameAssemblyFormatHandling.Simple
         };
 
-        public static string Serialize(IntelligenceDefinition intelligenceDefinition) =>
+        public static string Serialize(IntelligenceDatabase database) =>
             JsonConvert.SerializeObject(
-                intelligenceDefinition,
+                database,
                 Formatting.Indented,
                 SerializerSettings);
 
-        public static IntelligenceDefinition Deserialize(string value) =>
-            JsonConvert.DeserializeObject<IntelligenceDefinition>(
+        public static IntelligenceDatabase Deserialize(string value) =>
+            JsonConvert.DeserializeObject<IntelligenceDatabase>(
                 value,
                 SerializerSettings);
     }

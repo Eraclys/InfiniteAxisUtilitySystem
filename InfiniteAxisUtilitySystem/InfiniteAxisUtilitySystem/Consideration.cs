@@ -18,12 +18,8 @@ namespace InfiniteAxisUtilitySystem
         }
 
         public Guid Id { get; }
-        public string Name { get; private set; }
-        public Input Input { get; private set; }
-        public IResponseCurve ResponseCurve { get; private set; }
-
-        public void Rename(string newName) => Name = newName;
-        public void ChangeInput(Input newInput) => Input = newInput;
-        public void ChangeResponseCurve(IResponseCurve newResponseCurve) => ResponseCurve = newResponseCurve;
+        public string Name { get; }
+        public Input Input { get; }
+        public IResponseCurve ResponseCurve { get; }
     }
 }

@@ -33,74 +33,46 @@ namespace InfiniteAxisUtilitySystem.Tests.Persistence
                                 Consideration(PolynomialResponseCurve()),
                                 Consideration(SineResponseCurve())))));
 
-            var serialized = Serializer.Serialize(intelligenceDefinition);
+            var persistenceModel = intelligenceDefinition.ToPersistenceModel();
+
+            var serialized = Serializer.Serialize(persistenceModel);
 
             Debug.WriteLine(serialized);
 
             var deserialized = Serializer.Deserialize(serialized);
 
-            deserialized.Should().BeEquivalentTo(intelligenceDefinition);
+            var definition = deserialized.LoadIntelligenceDefinition(intelligenceDefinition.Id);
+
+            definition.Should().BeEquivalentTo(intelligenceDefinition);
         }
 
-        static IntelligenceDefinition IntelligenceDefinition(params DecisionMaker[] decisionMakers)
-        {
-            var intelligenceDefinition = new IntelligenceDefinition(
-                Guid.NewGuid(),
-                Guid.NewGuid().ToString());
-
-            foreach (var decisionMaker in decisionMakers)
-            {
-                intelligenceDefinition.AddDecisionMaker(decisionMaker);
-            }
-
-            return intelligenceDefinition;
-        }
-
-        static DecisionMaker DecisionMaker(IActionSetSelectionStrategy strategy, params ActionSet[] actionSets)
-        {
-            var decisionMaker = new DecisionMaker(
+        static IntelligenceDefinition IntelligenceDefinition(params DecisionMaker[] decisionMakers) =>
+            new IntelligenceDefinition(
                 Guid.NewGuid(),
                 Guid.NewGuid().ToString(),
-                strategy);
+                decisionMakers);
 
-            foreach (var actionSet in actionSets)
-            {
-                decisionMaker.AddActionSet(actionSet);
-            }
-
-            return decisionMaker;
-        }
-
-        static ActionSet ActionSet(IActionSelectionStrategy strategy, params Action[] actions)
-        {
-            var actionSet = new ActionSet(
+        static DecisionMaker DecisionMaker(IActionSetSelectionStrategy strategy, params ActionSet[] actionSets) =>
+            new DecisionMaker(
                 Guid.NewGuid(),
                 Guid.NewGuid().ToString(),
-                strategy);
+                strategy,
+                actionSets);
 
-            foreach (var action in actions)
-            {
-                actionSet.AddAction(action);
-            }
+        static ActionSet ActionSet(IActionSelectionStrategy strategy, params Action[] actions) =>
+            new ActionSet(
+                Guid.NewGuid(),
+                Guid.NewGuid().ToString(),
+                strategy,
+                actions);
 
-            return actionSet;
-        }
-
-        static Action Action(IActionScoringStrategy strategy, params Consideration[] considerations)
-        {
-            var action = new Action(
+        static Action Action(IActionScoringStrategy strategy, params Consideration[] considerations) =>
+            new Action(
                 Guid.NewGuid(),
                 Guid.NewGuid().ToString(),
                 Random.NextDouble(),
-                strategy);
-
-            foreach (var consideration in considerations)
-            {
-                action.AddConsideration(consideration);
-            }
-
-            return action;
-        }
+                strategy,
+                considerations);
 
         static Consideration Consideration(IResponseCurve responseCurve) =>
             new Consideration(

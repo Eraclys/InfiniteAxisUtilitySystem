@@ -12,8 +12,6 @@ namespace InfiniteAxisUtilitySystem
         }
 
         public Guid Id { get; }
-        public string Name { get; private set; }
-
-        public void Rename(string newName) => Name = newName;
+        public string Name { get; }
     }
 }
