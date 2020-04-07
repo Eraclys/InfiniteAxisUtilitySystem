@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace InfiniteAxisUtilitySystem
@@ -8,18 +9,21 @@ namespace InfiniteAxisUtilitySystem
         readonly IList<Consideration> _considerations;
 
         public Action(
-            string id,
-            double weight)
+            Guid id,
+            double weight,
+            IActionScoringStrategy actionScoringStrategy)
         {
+            _considerations = new List<Consideration>();
             Id = id;
             Weight = weight;
-            _considerations = new List<Consideration>();
+            ActionScoringStrategy = actionScoringStrategy;
         }
 
-        public string Id { get; }
+        public Guid Id { get; }
         public double Weight { get; }
+        public IActionScoringStrategy ActionScoringStrategy { get; }
 
-        public IEnumerable<Consideration> Considerations => _considerations;
+        public IReadOnlyCollection<Consideration> Considerations => _considerations.ToList();
 
         public void AddConsideration(Consideration consideration)
         {
@@ -31,7 +35,7 @@ namespace InfiniteAxisUtilitySystem
             _considerations.Add(consideration);
         }
 
-        public void RemoveConsideration(string id)
+        public void RemoveConsideration(Guid id)
         {
             var toRemove = _considerations.FirstOrDefault(c => c.Id == id);
 
@@ -41,20 +45,7 @@ namespace InfiniteAxisUtilitySystem
             }
         }
 
-        public double Score()
-        {
-            var modificationFactor = 1.0 - 1.0 / _considerations.Count;
-            var result = Weight;
-
-            foreach (var consideration in _considerations)
-            {
-                var score = consideration.Score();
-                var makeUpValue = (1.0 - score) * modificationFactor;
-                score += makeUpValue * score;
-                result *= score;
-            }
-
-            return result;
-        }
+        public double Score(IDictionary<Guid, IInputEvaluator> inputEvaluators) =>
+            ActionScoringStrategy.Score(this, inputEvaluators);
     }
 }

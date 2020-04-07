@@ -1,10 +1,12 @@
-﻿namespace InfiniteAxisUtilitySystem
+﻿using System;
+
+namespace InfiniteAxisUtilitySystem
 {
     public class Consideration
     {
         public Consideration(
-            string id,
-            IInput input,
+            Guid id,
+            Input input,
             IResponseCurve responseCurve)
         {
             Id = id;
@@ -12,10 +14,8 @@
             ResponseCurve = responseCurve;
         }
 
-        public string Id { get; }
-        public IInput Input { get; }
+        public Guid Id { get; }
+        public Input Input { get; }
         public IResponseCurve ResponseCurve { get; }
-
-        public double Score() => ResponseCurve.Evaluate(Input.Evaluate());
     }
 }

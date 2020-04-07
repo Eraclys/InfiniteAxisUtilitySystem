@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace InfiniteAxisUtilitySystem
@@ -8,9 +9,11 @@ namespace InfiniteAxisUtilitySystem
         readonly IList<ActionSet> _actionSets;
 
         public DecisionMaker(
-            string id)
+            Guid id,
+            IActionSetSelectionStrategy actionSetSelectionStrategy)
         {
             Id = id;
+            ActionSetSelectionStrategy = actionSetSelectionStrategy;
             _actionSets = new List<ActionSet>();
         }
 
@@ -26,7 +29,7 @@ namespace InfiniteAxisUtilitySystem
             _actionSets.Add(actionSet);
         }
 
-        public void RemoveActionSet(string id)
+        public void RemoveActionSet(Guid id)
         {
             var toRemove = _actionSets.FirstOrDefault(c => c.Id == id);
 
@@ -36,25 +39,10 @@ namespace InfiniteAxisUtilitySystem
             }
         }
 
-        public string Id { get; }
+        public Guid Id { get; }
+        public IActionSetSelectionStrategy ActionSetSelectionStrategy { get; }
 
-        public Action Select()
-        {
-            var maxScore = .0;
-            Action selectedAction = null;
-
-            foreach (var actionSet in _actionSets)
-            {
-                var pair = actionSet.Select();
-
-                if (pair.action != null && pair.score >= maxScore)
-                {
-                    maxScore = pair.score;
-                    selectedAction = pair.action;
-                }
-            }
-
-            return selectedAction;
-        }
+        public Action Select(IDictionary<Guid, IInputEvaluator> inputEvaluators) =>
+            ActionSetSelectionStrategy.Select(this, inputEvaluators);
     }
 }

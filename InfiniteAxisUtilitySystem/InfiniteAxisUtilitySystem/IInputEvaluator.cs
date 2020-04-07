@@ -1,9 +1,7 @@
 ﻿namespace InfiniteAxisUtilitySystem
 {
-    public interface IInput
+    public interface IInputEvaluator
     {
-        string Id { get; }
-
         double Evaluate();
     }
 }

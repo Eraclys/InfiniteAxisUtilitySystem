@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace InfiniteAxisUtilitySystem
@@ -8,13 +9,13 @@ namespace InfiniteAxisUtilitySystem
         readonly IList<DecisionMaker> _decisionMakers;
 
         public IntelligenceDefinition(
-            string id)
+            Guid id)
         {
             Id = id;
             _decisionMakers = new List<DecisionMaker>();
         }
 
-        public string Id { get; }
+        public Guid Id { get; }
 
         public IEnumerable<DecisionMaker> DecisionMakers => _decisionMakers;
 
@@ -29,7 +30,7 @@ namespace InfiniteAxisUtilitySystem
             _decisionMakers.Add(decisionMaker);
         }
 
-        public void RemoveDecisionMaker(string id)
+        public void RemoveDecisionMaker(Guid id)
         {
             var toRemove = _decisionMakers.FirstOrDefault(c => c.Id == id);
 
