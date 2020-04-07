@@ -4,18 +4,25 @@ using System.Linq;
 
 namespace InfiniteAxisUtilitySystem
 {
+    [Serializable]
     public class DecisionMaker
     {
         readonly IList<ActionSet> _actionSets;
 
         public DecisionMaker(
             Guid id,
+            string name,
             IActionSetSelectionStrategy actionSetSelectionStrategy)
         {
             Id = id;
+            Name = name;
             ActionSetSelectionStrategy = actionSetSelectionStrategy;
             _actionSets = new List<ActionSet>();
         }
+
+        public Guid Id { get; }
+        public string Name { get; private set; }
+        public IActionSetSelectionStrategy ActionSetSelectionStrategy { get; private set; }
 
         public IEnumerable<ActionSet> ActionSets => _actionSets;
 
@@ -39,10 +46,10 @@ namespace InfiniteAxisUtilitySystem
             }
         }
 
-        public Guid Id { get; }
-        public IActionSetSelectionStrategy ActionSetSelectionStrategy { get; }
+        public void Rename(string newName) => Name = newName;
+        public void ChangeSelectionStrategy(IActionSetSelectionStrategy newStrategy) => ActionSetSelectionStrategy = newStrategy;
 
-        public Action Select(IDictionary<Guid, IInputEvaluator> inputEvaluators) =>
-            ActionSetSelectionStrategy.Select(this, inputEvaluators);
+        public Action Select(DecisionContext context) =>
+            ActionSetSelectionStrategy.Select(this, context);
     }
 }

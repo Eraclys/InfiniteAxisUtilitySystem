@@ -1,22 +1,15 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 
 namespace InfiniteAxisUtilitySystem.ActionSelectionStrategies
 {
+    [Serializable]
     public class RandomSelectionWeightedByScore : IActionSelectionStrategy
     {
-        readonly Random _random;
-
-        public RandomSelectionWeightedByScore(Random random)
-        {
-            _random = random;
-        }
-
-        public SelectedAction Select(ActionSet actionSet, IDictionary<Guid, IInputEvaluator> inputEvaluators)
+        public SelectedAction Select(ActionSet actionSet, DecisionContext context)
         {
             var utilities = actionSet.Actions
-                .Select(x => new SelectedAction(x, x.Score(inputEvaluators)))
+                .Select(x => new SelectedAction(x, x.Score(context)))
                 .ToList();
 
             var utilitySum = utilities.Sum(x => x.Score);
@@ -31,7 +24,7 @@ namespace InfiniteAxisUtilitySystem.ActionSelectionStrategies
                 .ToList();
 
             var runningSum = .0;
-            var randomValue = _random.NextDouble();
+            var randomValue = context.RandomGenerator.Next();
 
             foreach (var actionProbability in sortedListOfActionsByProbability)
             {

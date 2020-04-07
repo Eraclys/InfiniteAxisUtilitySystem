@@ -1,18 +1,18 @@
 ﻿using System;
-using System.Collections.Generic;
 
 namespace InfiniteAxisUtilitySystem.ActionSetSelectionStrategies
 {
+    [Serializable]
     public class HighestScoringAction : IActionSetSelectionStrategy
     {
-        public Action Select(DecisionMaker decisionMaker, IDictionary<Guid, IInputEvaluator> inputEvaluators)
+        public Action Select(DecisionMaker decisionMaker, DecisionContext context)
         {
             var maxScore = .0;
             Action selectedAction = null;
 
             foreach (var actionSet in decisionMaker.ActionSets)
             {
-                var pair = actionSet.Select(inputEvaluators);
+                var pair = actionSet.Select(context);
 
                 if (pair.Action != null && pair.Score >= maxScore)
                 {

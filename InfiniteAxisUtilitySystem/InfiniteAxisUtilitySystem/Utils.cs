@@ -1,6 +1,6 @@
 ﻿namespace InfiniteAxisUtilitySystem
 {
-    public static class Utils
+    internal static class Utils
     {
         public static double Sanitize(double value)
         {

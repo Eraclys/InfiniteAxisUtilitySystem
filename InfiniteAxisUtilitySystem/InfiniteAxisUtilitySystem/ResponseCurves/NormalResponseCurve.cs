@@ -2,7 +2,8 @@
 
 namespace InfiniteAxisUtilitySystem.ResponseCurves
 {
-    public abstract class NormalResponseCurve : IResponseCurve
+    [Serializable]
+    public class NormalResponseCurve : IResponseCurve
     {
         public NormalResponseCurve(
             double slope,
@@ -16,7 +17,6 @@ namespace InfiniteAxisUtilitySystem.ResponseCurves
             YShift = yShift;
         }
 
-        public abstract string Id { get; }
         public double Slope { get; }
         public double Exponent { get; }
         public double XShift { get; }

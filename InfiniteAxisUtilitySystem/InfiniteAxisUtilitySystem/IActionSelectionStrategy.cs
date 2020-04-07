@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace InfiniteAxisUtilitySystem
+﻿namespace InfiniteAxisUtilitySystem
 {
     public interface IActionSelectionStrategy
     {
-        SelectedAction Select(ActionSet actionSet, IDictionary<Guid, IInputEvaluator> inputEvaluators);
+        SelectedAction Select(ActionSet actionSet, DecisionContext context);
     }
 }

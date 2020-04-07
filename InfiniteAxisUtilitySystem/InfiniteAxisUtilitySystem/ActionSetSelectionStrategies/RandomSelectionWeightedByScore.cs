@@ -1,9 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 
 namespace InfiniteAxisUtilitySystem.ActionSetSelectionStrategies
 {
+    [Serializable]
     public class RandomSelectionWeightedByScore : IActionSetSelectionStrategy
     {
         readonly Random _random;
@@ -13,10 +13,10 @@ namespace InfiniteAxisUtilitySystem.ActionSetSelectionStrategies
             _random = random;
         }
 
-        public Action Select(DecisionMaker decisionMaker, IDictionary<Guid, IInputEvaluator> inputEvaluators)
+        public Action Select(DecisionMaker decisionMaker, DecisionContext context)
         {
             var utilities = decisionMaker.ActionSets
-                .Select(x => x.Select(inputEvaluators))
+                .Select(x => x.Select(context))
                 .ToList();
 
             var utilitySum = utilities.Sum(x => x.Score);
