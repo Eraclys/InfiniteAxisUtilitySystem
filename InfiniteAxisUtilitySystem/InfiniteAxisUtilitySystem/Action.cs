@@ -1,13 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Newtonsoft.Json;
 
 namespace InfiniteAxisUtilitySystem
 {
     [Serializable]
     public class Action
     {
-        readonly IList<Consideration> _considerations;
+        [JsonProperty(nameof(Considerations))]
+        readonly List<Consideration> _considerations;
 
         public Action(
             Guid id,
@@ -27,7 +29,8 @@ namespace InfiniteAxisUtilitySystem
         public double Weight { get; private set; }
         public IActionScoringStrategy ActionScoringStrategy { get; private set; }
 
-        public IReadOnlyCollection<Consideration> Considerations => _considerations.ToList();
+        [JsonIgnore]
+        public IReadOnlyCollection<Consideration> Considerations => _considerations;
 
         public void AddConsideration(Consideration consideration)
         {

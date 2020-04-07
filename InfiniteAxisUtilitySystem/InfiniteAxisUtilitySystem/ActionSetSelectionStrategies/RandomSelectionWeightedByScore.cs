@@ -6,13 +6,6 @@ namespace InfiniteAxisUtilitySystem.ActionSetSelectionStrategies
     [Serializable]
     public class RandomSelectionWeightedByScore : IActionSetSelectionStrategy
     {
-        readonly Random _random;
-
-        public RandomSelectionWeightedByScore(Random random)
-        {
-            _random = random;
-        }
-
         public Action Select(DecisionMaker decisionMaker, DecisionContext context)
         {
             var utilities = decisionMaker.ActionSets
@@ -31,7 +24,7 @@ namespace InfiniteAxisUtilitySystem.ActionSetSelectionStrategies
                 .ToList();
 
             var runningSum = .0;
-            var randomValue = _random.NextDouble();
+            var randomValue = context.RandomGenerator.Next();
 
             foreach (var actionProbability in sortedListOfActionsByProbability)
             {

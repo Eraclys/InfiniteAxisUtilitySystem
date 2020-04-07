@@ -1,13 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Newtonsoft.Json;
 
 namespace InfiniteAxisUtilitySystem
 {
     [Serializable]
     public class ActionSet
     {
-        readonly IList<Action> _actions;
+        [JsonProperty(nameof(Actions))]
+        readonly List<Action> _actions;
 
         public ActionSet(
             Guid id,
@@ -24,7 +26,8 @@ namespace InfiniteAxisUtilitySystem
         public string Name { get; private set; }
         public IActionSelectionStrategy ActionSelectionStrategy { get; private set; }
 
-        public IEnumerable<Action> Actions => _actions;
+        [JsonIgnore]
+        public IReadOnlyCollection<Action> Actions => _actions;
 
         public void AddAction(Action action)
         {

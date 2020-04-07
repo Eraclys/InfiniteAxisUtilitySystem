@@ -1,13 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Newtonsoft.Json;
 
 namespace InfiniteAxisUtilitySystem
 {
     [Serializable]
     public class IntelligenceDefinition
     {
-        readonly IList<DecisionMaker> _decisionMakers;
+        [JsonProperty(nameof(DecisionMakers))]
+        readonly List<DecisionMaker> _decisionMakers;
 
         public IntelligenceDefinition(
             Guid id,
@@ -21,7 +23,8 @@ namespace InfiniteAxisUtilitySystem
         public Guid Id { get; }
         public string Name { get; private set; }
 
-        public IEnumerable<DecisionMaker> DecisionMakers => _decisionMakers;
+        [JsonIgnore]
+        public IReadOnlyCollection<DecisionMaker> DecisionMakers => _decisionMakers;
 
         public void Rename(string newName) => Name = newName;
 
